@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Neighborhoods</string>
-    <string name="action_search">Type your area</string>
+    <string name="search_hint">Type your area…</string>
 </resources>

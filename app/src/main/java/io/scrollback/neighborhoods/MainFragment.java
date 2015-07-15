@@ -66,6 +66,7 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
+        searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setOnQueryTextListener(this);
     }
 
