@@ -3,12 +3,14 @@ package io.scrollback.neighborhoods.data;
 
 public class AreaModel {
     String name;
+    String description;
     double latitude;
     double longitude;
     String roomId;
 
-    public AreaModel(String name, double latitude, double longitude, String roomId) {
+    public AreaModel(String name, String description, double latitude, double longitude, String roomId) {
         this.name = name;
+        this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
         this.roomId = roomId;
@@ -20,6 +22,14 @@ public class AreaModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getLatitude() {

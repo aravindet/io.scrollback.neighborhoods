@@ -8,15 +8,18 @@ import io.scrollback.neighborhoods.data.AreaModel;
 
 public class AreaViewHolder extends RecyclerView.ViewHolder {
 
-    private final TextView title;
+    private final TextView name;
+    private final TextView description;
 
     public AreaViewHolder(View itemView) {
         super(itemView);
 
-        title = (TextView) itemView.findViewById(R.id.area_title);
+        name = (TextView) itemView.findViewById(R.id.area_name);
+        description = (TextView) itemView.findViewById(R.id.area_description);
     }
 
     public void bind(AreaModel model) {
-        title.setText(model.getName());
+        name.setText(model.getName());
+        description.setText(model.getDescription());
     }
 }

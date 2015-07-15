@@ -92,8 +92,9 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
 
         for (AreaModel model : models) {
             final String name = model.getName().toLowerCase();
+            final String description = model.getDescription().toLowerCase();
 
-            if (name.contains(query)) {
+            if (name.contains(query) || description.contains(query)) {
                 filteredModelList.add(model);
             }
         }
