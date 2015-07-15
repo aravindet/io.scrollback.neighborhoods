@@ -1,4 +1,4 @@
-package com.github.wrdlbrnft.searchablerecyclerviewdemo.ui.adapter;
+package io.scrollback.neighborhoods;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,18 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.wrdlbrnft.searchablerecyclerviewdemo.R;
-import com.github.wrdlbrnft.searchablerecyclerviewdemo.ui.adapter.models.ExampleModel;
-import com.github.wrdlbrnft.searchablerecyclerviewdemo.ui.adapter.viewholder.ExampleViewHolder;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created with Android Studio
- * User: Xaver
- * Date: 24/05/15
- */
 public class ExampleAdapter extends RecyclerView.Adapter<ExampleViewHolder> {
 
     private final LayoutInflater mInflater;

@@ -1,4 +1,4 @@
-package com.github.wrdlbrnft.searchablerecyclerviewdemo.ui.fragments;
+package io.scrollback.neighborhoods;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,10 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.github.wrdlbrnft.searchablerecyclerviewdemo.R;
-import com.github.wrdlbrnft.searchablerecyclerviewdemo.ui.adapter.ExampleAdapter;
-import com.github.wrdlbrnft.searchablerecyclerviewdemo.ui.adapter.models.ExampleModel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,5 @@
-package com.github.wrdlbrnft.searchablerecyclerviewdemo.ui.adapter.models;
+package io.scrollback.neighborhoods;
 
-/**
- * Created with Android Studio
- * User: Xaver
- * Date: 24/05/15
- */
 public class ExampleModel {
 
     private final String mText;
