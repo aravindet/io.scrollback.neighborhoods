@@ -1,11 +1,13 @@
 package io.scrollback.neighborhoods;
 
 import android.os.Bundle;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,70 +18,20 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.scrollback.neighborhoods.data.AreaModel;
+import io.scrollback.neighborhoods.data.AreaProvider;
+
 public class MainFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     public static MainFragment newInstance() {
         return new MainFragment();
     }
 
-    private static final String[] MOVIES = new String[]{
-            "The Woman in Black: Angel of Death",
-            "20 Once Again",
-            "Taken 3",
-            "Tevar",
-            "I",
-            "Blackhat",
-            "Spare Parts",
-            "The Wedding Ringer",
-            "Ex Machina",
-            "Mortdecai",
-            "Strange Magic",
-            "The Boy Next Door",
-            "The SpongeBob Movie: Sponge Out of Water",
-            "Kingsman: The Secret Service",
-            "Boonie Bears: Mystical Winter",
-            "Project Almanac",
-            "Running Man",
-            "Wild Card",
-            "It Follows",
-            "C'est si bon",
-            "Yennai Arindhaal",
-            "Shaun the Sheep Movie",
-            "Jupiter Ascending",
-            "Old Fashioned",
-            "Somewhere Only We Know",
-            "Fifty Shades of Grey",
-            "Dragon Blade",
-            "Zhong Kui: Snow Girl and the Dark Crystal",
-            "Badlapur",
-            "Hot Tub Time Machine 2",
-            "McFarland, USA",
-            "The Duff",
-            "The Second Best Exotic Marigold Hotel",
-            "A la mala",
-            "Focus",
-            "The Lazarus Effect",
-            "Chappie",
-            "Faults",
-            "Road Hard",
-            "Unfinished Business",
-            "Cinderella",
-            "NH10",
-            "Run All Night",
-            "X+Y",
-            "Furious 7",
-            "Danny Collins",
-            "Do You Believe?",
-            "Jalaibee",
-            "The Divergent Series: Insurgent",
-            "The Gunman",
-            "Get Hard",
-            "Home"
-    };
+    private static final List<AreaModel> Areas = new AreaProvider().getAreas();
 
     private RecyclerView mRecyclerView;
-    private ExampleAdapter mAdapter;
-    private List<ExampleModel> mModels;
+    private AreaAdapter mAdapter;
+    private List<AreaModel> mModels;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,11 +51,11 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
 
         mModels = new ArrayList<>();
 
-        for (String movie : MOVIES) {
-            mModels.add(new ExampleModel(movie));
+        for (AreaModel area: Areas) {
+            mModels.add(area);
         }
 
-        mAdapter = new ExampleAdapter(getActivity(), mModels);
+        mAdapter = new AreaAdapter(getActivity(), mModels);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -113,14 +65,17 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
 
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+
         searchView.setOnQueryTextListener(this);
     }
 
     @Override
     public boolean onQueryTextChange(String query) {
-        final List<ExampleModel> filteredModelList = filter(mModels, query);
+        final List<AreaModel> filteredModelList = filter(mModels, query);
+
         mAdapter.animateTo(filteredModelList);
         mRecyclerView.scrollToPosition(0);
+
         return true;
     }
 
@@ -129,16 +84,19 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
         return false;
     }
 
-    private List<ExampleModel> filter(List<ExampleModel> models, String query) {
+    private List<AreaModel> filter(List<AreaModel> models, String query) {
         query = query.toLowerCase();
 
-        final List<ExampleModel> filteredModelList = new ArrayList<>();
-        for (ExampleModel model : models) {
-            final String text = model.getText().toLowerCase();
-            if (text.contains(query)) {
+        final List<AreaModel> filteredModelList = new ArrayList<>();
+
+        for (AreaModel model : models) {
+            final String name = model.getName().toLowerCase();
+
+            if (name.contains(query)) {
                 filteredModelList.add(model);
             }
         }
+
         return filteredModelList;
     }
 }
