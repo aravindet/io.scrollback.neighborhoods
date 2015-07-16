@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,14 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
 
         mAdapter = new AreaAdapter(getActivity(), mModels);
         mRecyclerView.setAdapter(mAdapter);
+
+        mRecyclerView.addOnItemTouchListener(
+            new RecyclerItemClickListener(getActivity().getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                @Override public void onItemClick(View view, int position) {
+                    Toast.makeText(getActivity(), mModels.get(position).getName(), Toast.LENGTH_SHORT).show();
+                }
+            })
+        );
     }
 
     @Override
