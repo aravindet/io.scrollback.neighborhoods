@@ -1,0 +1,3 @@
+[submodule "scrollbacklib"]
+	path = scrollbacklib
+	url = https://github.com/scrollback/scrollback-android-sdk.git

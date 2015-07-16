@@ -1,9 +1,12 @@
 package io.scrollback.neighborhoods;
 
+import android.content.Context;
+import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.scrollback.library.NavMessage;
 import io.scrollback.neighborhoods.data.AreaModel;
 import io.scrollback.neighborhoods.data.AreaProvider;
 
@@ -46,6 +50,7 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         setHasOptionsMenu(true);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -62,7 +67,14 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
         mRecyclerView.addOnItemTouchListener(
             new RecyclerItemClickListener(getActivity().getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override public void onItemClick(View view, int position) {
-                    Toast.makeText(getActivity(), mModels.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    AreaModel model = mModels.get(position);
+
+                    SbFragment.getInstance().postMessage(new NavMessage("{" +
+                                "room: '" + model.getRoomId() + "'," +
+                                "mode: 'room'" +
+                            "}"));
+
+                    Toast.makeText(getActivity(), model.getName(), Toast.LENGTH_SHORT).show();
                 }
             })
         );
