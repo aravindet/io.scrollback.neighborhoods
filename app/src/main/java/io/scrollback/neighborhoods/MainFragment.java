@@ -75,9 +75,15 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
                             "}"));
 
                     Toast.makeText(getActivity(), model.getName(), Toast.LENGTH_SHORT).show();
+                    ((MainActivity)getActivity()).showSbFragment();
+                    destroyFragment();
                 }
             })
         );
+    }
+
+    private void destroyFragment(){
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
     @Override
