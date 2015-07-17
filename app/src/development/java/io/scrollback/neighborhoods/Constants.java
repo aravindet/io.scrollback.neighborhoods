@@ -1,6 +1,6 @@
-import java.lang.String;
+package io.scrollback.neighborhoods;
 
-io.scrollback.neighborhoods
+import java.lang.String;
 
 public class Constants {
     public static final String HOST = "local.scrollback.io";
