@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.scrollback_container, scrollbackFragment)
                     .commit();
         }
-
-        scrollbackFragment.setEnableDebug(BuildConfig.DEBUG);
     }
 
     public void showAreaFragment() {

@@ -17,6 +17,14 @@ android {
         }
     }
     productFlavors {
+        production {
+        }
+        staging {
+            applicationId "io.scrollback.neighborhoods.staging"
+        }
+        development {
+            applicationId "io.scrollback.neighborhoods.development"
+        }
     }
 }
 
