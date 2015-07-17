@@ -25,11 +25,8 @@ public class MainActivity extends AppCompatActivity {
         areaFrame = (FrameLayout) findViewById(R.id.area_container);
         sbFrame = (FrameLayout) findViewById(R.id.scrollback_container);
 
-
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.area_container, MainFragment.newInstance())
-                    .commit();
+            showAreaFragment();
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.scrollback_container, scrollbackFragment)
@@ -37,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         scrollbackFragment.setEnableDebug(BuildConfig.DEBUG);
+    }
+
+    public void showAreaFragment() {
+        getSupportActionBar().show();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.area_container, MainFragment.newInstance())
+                .commit();
+
+        areaFrame.setVisibility(View.VISIBLE);
+        sbFrame.setVisibility(View.INVISIBLE);
     }
 
     public void showSbFragment() {
