@@ -1,5 +1,6 @@
 package io.scrollback.neighborhoods;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -9,7 +10,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import io.scrollback.library.AuthStatus;
+import io.scrollback.library.FollowMessage;
+import io.scrollback.library.NavMessage;
+import io.scrollback.library.ReadyMessage;
 import io.scrollback.library.ScrollbackFragment;
+import io.scrollback.library.ScrollbackMessageHandler;
 
 public class MainActivity extends AppCompatActivity {
     ScrollbackFragment scrollbackFragment = SbFragment.getInstance();
@@ -32,6 +38,29 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.scrollback_container, scrollbackFragment)
                     .commit();
         }
+
+        scrollbackFragment.setMessageHandler(new ScrollbackMessageHandler() {
+            @Override
+            public void onNavMessage(NavMessage message) {
+                if (message != null && message.mode.equals("home")) {
+                    scrollbackFragment.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showAreaFragment();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onAuthMessage(AuthStatus message) { }
+
+            @Override
+            public void onFollowMessage(FollowMessage message) { }
+
+            @Override
+            public void onReadyMessage(ReadyMessage message) { }
+        });
     }
 
     public void showAreaFragment() {

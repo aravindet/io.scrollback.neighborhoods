@@ -74,8 +74,6 @@ public class MainFragment extends Fragment implements SearchView.OnQueryTextList
                                 "mode: 'room'" +
                             "}"));
 
-                    Toast.makeText(getActivity(), model.getName(), Toast.LENGTH_SHORT).show();
-
                     ((MainActivity) getActivity()).showSbFragment();
 
                     destroyFragment();
