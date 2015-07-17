@@ -2,7 +2,6 @@ package io.scrollback.neighborhoods;
 
 import android.view.KeyEvent;
 
-import io.scrollback.library.Constants;
 import io.scrollback.library.ScrollbackFragment;
 
 public class SbFragment extends ScrollbackFragment {

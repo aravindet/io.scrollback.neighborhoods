@@ -1,4 +1,4 @@
-package io.scrollback.app;
+io.scrollback.neighborhoods
 
 public class Constants {
     public static final String HOST = "scrollback.io";
