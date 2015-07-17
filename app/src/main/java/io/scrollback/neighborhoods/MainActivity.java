@@ -1,8 +1,5 @@
 package io.scrollback.neighborhoods;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +16,8 @@ import io.scrollback.library.ScrollbackMessageHandler;
 
 public class MainActivity extends AppCompatActivity {
     ScrollbackFragment scrollbackFragment = SbFragment.getInstance();
+    MainFragment areaFragment;
+
     FrameLayout areaFrame;
     FrameLayout sbFrame;
 
@@ -41,12 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
         scrollbackFragment.setMessageHandler(new ScrollbackMessageHandler() {
             @Override
-            public void onNavMessage(NavMessage message) {
-                if (message != null && message.mode.equals("home")) {
+            public void onNavMessage(final NavMessage message) {
+                if (message != null && message.mode != null) {
                     scrollbackFragment.getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showAreaFragment();
+                            if (message.mode.equals("home")) {
+                                showAreaFragment();
+                            } else {
+                                hideAreaFragment();
+                            }
                         }
                     });
                 }
@@ -66,18 +69,28 @@ public class MainActivity extends AppCompatActivity {
     public void showAreaFragment() {
         getSupportActionBar().show();
 
+        areaFragment = MainFragment.newInstance();
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.area_container, MainFragment.newInstance())
+                .replace(R.id.area_container, areaFragment)
                 .commit();
 
         areaFrame.setVisibility(View.VISIBLE);
         sbFrame.setVisibility(View.INVISIBLE);
     }
 
-    public void showSbFragment() {
+    public void hideAreaFragment() {
         // If you want to customize view animations (like material reveal) look here:
         // https://developer.android.com/training/material/animations.html#Reveal
         getSupportActionBar().hide();
+
+        if (areaFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(areaFragment)
+                    .commit();
+
+            areaFragment = null;
+        }
 
         areaFrame.setVisibility(View.INVISIBLE);
         sbFrame.setVisibility(View.VISIBLE);

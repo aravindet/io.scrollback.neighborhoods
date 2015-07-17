@@ -2,12 +2,7 @@ package io.scrollback.neighborhoods;
 
 import android.view.KeyEvent;
 
-import io.scrollback.library.AuthStatus;
-import io.scrollback.library.FollowMessage;
-import io.scrollback.library.NavMessage;
-import io.scrollback.library.ReadyMessage;
 import io.scrollback.library.ScrollbackFragment;
-import io.scrollback.library.ScrollbackMessageHandler;
 
 public class SbFragment extends ScrollbackFragment {
     private static SbFragment instance;
