@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReadyMessage(ReadyMessage message) { }
         });
+
+        scrollbackFragment.setCanChangeStatusBarColor(false);
     }
 
     public void showAreaFragment() {

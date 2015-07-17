@@ -33,18 +33,6 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".gcm.GCMBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="io.scrollback.app" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name=".gcm.GCMIntentService" />
-
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"

@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,49 +35,41 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
     private static final List<AreaModel> Areas = new AreaProvider().getAreas();
 
     private RecyclerView mRecyclerView;
-    private AreaAdapter mAdapter;
-    private List<AreaModel> mModels;
+
+    private AreaAdapter currentAdapter;
+    private List<AreaModel> currentModel;
+
+    private AreaAdapter allAdapter;
+    private AreaAdapter recentAdapter;
+
+    private List<AreaModel> allAreas = new ArrayList<>();
+    private List<AreaModel> recentAreas = new ArrayList<>();
+
     private View mSearchEditFrame;
 
-    private void initModels(boolean preferStored) {
-        mModels = new ArrayList<>();
-
-        if (preferStored) {
-            List<AreaModel> all = new AreaStore(getActivity()).getAll();
-            int size = all.size();
-
-            if (size > 0) {
-                Collections.sort(all, new Comparator<AreaModel>() {
-                    public int compare(final AreaModel a, final AreaModel b) {
-                        Date dateA = a.getSelectTime();
-                        Date dateB = b.getSelectTime();
-
-                        if (dateA == null && dateB == null) {
-                            return 0;
-                        } else if (dateA == null && dateB != null) {
-                            return 1;
-                        } else if (dateB == null && dateA != null) {
-                            return -1;
-                        } else {
-                            if (dateA.before(dateB)) {
-                                return 1;
-                            } else if (dateA.after(dateB)) {
-                                return -1;
-                            } else {
-                                return 0;
-                            }
-                        }
-                    }
-                });
-
-                mModels = all.subList(Math.max(size - 5, 0), size);
-
-                return;
-            }
+    private void setAdapter(boolean isRecent) {
+        if (mRecyclerView == null) {
+            return;
         }
 
-        for (AreaModel area: Areas) {
-            mModels.add(area);
+        if (isRecent && recentAreas.size() > 0) {
+            if (currentModel != null && currentModel.size() == recentAreas.size()) {
+                return;
+            }
+
+            mRecyclerView.setAdapter(recentAdapter);
+
+            currentAdapter = recentAdapter;
+            currentModel = recentAreas;
+        } else {
+            if (currentModel != null && currentModel.size() == allAreas.size()) {
+                return;
+            }
+
+            mRecyclerView.setAdapter(allAdapter);
+
+            currentAdapter = recentAdapter;
+            currentModel = allAreas;
         }
     }
 
@@ -99,15 +90,50 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        initModels(true);
+        List<AreaModel> all = new AreaStore(getActivity()).getAll();
 
-        mAdapter = new AreaAdapter(getActivity(), mModels);
-        mRecyclerView.setAdapter(mAdapter);
+        int size = all.size();
+
+        if (size > 0) {
+            Collections.sort(all, new Comparator<AreaModel>() {
+                public int compare(final AreaModel a, final AreaModel b) {
+                    Date dateA = a.getSelectTime();
+                    Date dateB = b.getSelectTime();
+
+                    if (dateA == null && dateB == null) {
+                        return 0;
+                    } else if (dateA == null && dateB != null) {
+                        return 1;
+                    } else if (dateB == null && dateA != null) {
+                        return -1;
+                    } else {
+                        if (dateA.before(dateB)) {
+                            return 1;
+                        } else if (dateA.after(dateB)) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                }
+            });
+
+            recentAreas = all.subList(Math.max(size - 5, 0), size);
+        }
+
+        for (AreaModel area: Areas) {
+            allAreas.add(area);
+        }
+
+        recentAdapter = new AreaAdapter(getActivity(), recentAreas);
+        allAdapter = new AreaAdapter(getActivity(), allAreas);
+
+        setAdapter(true);
 
         mRecyclerView.addOnItemTouchListener(
             new RecyclerItemClickListener(getActivity().getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override public void onItemClick(View view, int position) {
-                    AreaModel model = mModels.get(position);
+                    AreaModel model = currentModel.get(position);
 
                     model.setSelectTime(new Date());
 
@@ -133,10 +159,11 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
         menuItem.setShowAsAction(MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
-        mSearchEditFrame = searchView
-                .findViewById(android.support.v7.appcompat.R.id.search_edit_frame);
-        ViewTreeObserver vto = mSearchEditFrame.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        mSearchEditFrame = searchView.findViewById(android.support.v7.appcompat.R.id.search_edit_frame);
+
+        ViewTreeObserver observer = mSearchEditFrame.getViewTreeObserver();
+
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             int oldVisibility = -1;
 
             @Override
@@ -146,9 +173,9 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
                 if (currentVisibility != oldVisibility) {
                     if (currentVisibility == View.VISIBLE) {
-                        Toast.makeText(getActivity(), "I'm expanded!", Toast.LENGTH_LONG).show();
+                        setAdapter(false);
                     } else {
-                        Toast.makeText(getActivity(), "I'm collapsed!", Toast.LENGTH_SHORT).show();
+                        setAdapter(true);
                     }
 
                     oldVisibility = currentVisibility;
@@ -163,9 +190,9 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
     @Override
     public boolean onQueryTextChange(String query) {
-        final List<AreaModel> filteredModelList = filter(mModels, query);
+        final List<AreaModel> filteredModelList = filter(currentModel, query);
 
-        mAdapter.animateTo(filteredModelList);
+        currentAdapter.animateTo(filteredModelList);
         mRecyclerView.scrollToPosition(0);
 
         return true;
