@@ -16,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import io.scrollback.library.NavMessage;
@@ -65,9 +68,13 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
                 @Override public void onItemClick(View view, int position) {
                     AreaModel model = mModels.get(position);
 
+                    model.setSelectTime(new Date());
+
+                    new AreaStore(getActivity()).putArea(model);
+
                     SbFragment.getInstance().postMessage(new NavMessage("{" +
-                                "room: '" + model.getRoomId() + "'," +
-                                "mode: 'room'" +
+                            "room: '" + model.getRoomId() + "'," +
+                            "mode: 'room'" +
                             "}"));
 
                     ((MainActivity) getActivity()).hideAreaFragment();

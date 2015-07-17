@@ -8,7 +8,7 @@ public class AreaProvider {
     public static List<AreaModel> areas = null;
 
     public static void initializeAreas() {
-        areas = new ArrayList<AreaModel>();
+        areas = new ArrayList<>();
 
         areas.add(new AreaModel("Adugodi", "This is a description", 12.9420036  ,77.6083044, "nh-adugodi"));
         areas.add(new AreaModel("Agara", "This is a description",   12.9643568  ,77.6211074, "nh-agara"));
