@@ -7,7 +7,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-
+;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +37,48 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
     private AreaAdapter mAdapter;
     private List<AreaModel> mModels;
 
+    private void initModels(boolean preferStored) {
+        mModels = new ArrayList<>();
+
+        if (preferStored) {
+            List<AreaModel> all = new AreaStore(getActivity()).getAll();
+            int size = all.size();
+
+            if (size > 0) {
+                Collections.sort(all, new Comparator<AreaModel>() {
+                    public int compare(final AreaModel a, final AreaModel b) {
+                        Date dateA = a.getSelectTime();
+                        Date dateB = b.getSelectTime();
+
+                        if (dateA == null && dateB == null) {
+                            return 0;
+                        } else if (dateA == null && dateB != null) {
+                            return 1;
+                        } else if (dateB == null && dateA != null) {
+                            return -1;
+                        } else {
+                            if (dateA.before(dateB)) {
+                                return 1;
+                            } else if (dateA.after(dateB)) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    }
+                });
+
+                mModels = all.subList(Math.max(size - 5, 0), size);
+
+                return;
+            }
+        }
+
+        for (AreaModel area: Areas) {
+            mModels.add(area);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -54,11 +96,7 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mModels = new ArrayList<>();
-
-        for (AreaModel area: Areas) {
-            mModels.add(area);
-        }
+        initModels(true);
 
         mAdapter = new AreaAdapter(getActivity(), mModels);
         mRecyclerView.setAdapter(mAdapter);
@@ -87,8 +125,10 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
 
-        final MenuItem item = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        final MenuItem menuItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+
+        menuItem.setShowAsAction(MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 
         searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setOnQueryTextListener(this);
