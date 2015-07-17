@@ -22,10 +22,10 @@ import io.scrollback.library.NavMessage;
 import io.scrollback.neighborhoods.data.AreaModel;
 import io.scrollback.neighborhoods.data.AreaProvider;
 
-public class MainFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class AreaFragment extends Fragment implements SearchView.OnQueryTextListener {
 
-    public static MainFragment newInstance() {
-        return new MainFragment();
+    public static AreaFragment newInstance() {
+        return new AreaFragment();
     }
 
     private static final List<AreaModel> Areas = new AreaProvider().getAreas();

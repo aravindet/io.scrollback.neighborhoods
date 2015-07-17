@@ -16,7 +16,7 @@ import io.scrollback.library.ScrollbackMessageHandler;
 
 public class MainActivity extends AppCompatActivity {
     ScrollbackFragment scrollbackFragment = SbFragment.getInstance();
-    MainFragment areaFragment;
+    AreaFragment areaFragment;
 
     FrameLayout areaFrame;
     FrameLayout sbFrame;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public void showAreaFragment() {
         getSupportActionBar().show();
 
-        areaFragment = MainFragment.newInstance();
+        areaFragment = AreaFragment.newInstance();
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.area_container, areaFragment)
