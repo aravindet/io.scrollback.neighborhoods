@@ -14,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +38,7 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
     private RecyclerView mRecyclerView;
     private AreaAdapter mAdapter;
     private List<AreaModel> mModels;
+    private View mSearchEditFrame;
 
     private void initModels(boolean preferStored) {
         mModels = new ArrayList<>();
@@ -129,6 +132,30 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
 
         menuItem.setShowAsAction(MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
+
+        mSearchEditFrame = searchView
+                .findViewById(android.support.v7.appcompat.R.id.search_edit_frame);
+        ViewTreeObserver vto = mSearchEditFrame.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            int oldVisibility = -1;
+
+            @Override
+            public void onGlobalLayout() {
+
+                int currentVisibility = mSearchEditFrame.getVisibility();
+
+                if (currentVisibility != oldVisibility) {
+                    if (currentVisibility == View.VISIBLE) {
+                        Toast.makeText(getActivity(), "I'm expanded!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getActivity(), "I'm collapsed!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    oldVisibility = currentVisibility;
+                }
+
+            }
+        });
 
         searchView.setQueryHint(getString(R.string.search_hint));
         searchView.setOnQueryTextListener(this);
