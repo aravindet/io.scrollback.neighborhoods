@@ -162,7 +162,7 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
         ViewTreeObserver observer = mSearchEditFrame.getViewTreeObserver();
 
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            int oldVisibility = -1;
+            int oldVisibility = mSearchEditFrame.getVisibility();
 
             @Override
             public void onGlobalLayout() {
