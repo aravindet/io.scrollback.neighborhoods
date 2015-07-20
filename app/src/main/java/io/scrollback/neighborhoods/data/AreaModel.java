@@ -17,6 +17,7 @@ public class AreaModel {
     private double longitude;
     private String roomId;
     private Date selectTime;
+    private double distFromLocation = 0;
 
     protected void init(String name, String description, double latitude, double longitude, String roomId, Date selectTime) {
         this.name = name;
@@ -139,4 +140,11 @@ public class AreaModel {
 
         return json;
     };
+    public double getDistFromLocation() {
+        return distFromLocation;
+    }
+
+    public void setDistFromLocation(double distFromLocation) {
+        this.distFromLocation = distFromLocation;
+    }
 }

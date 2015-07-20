@@ -9,12 +9,7 @@ public class SbFragment extends ScrollbackFragment {
 
     public static ScrollbackFragment getInstance() {
         if (instance == null) {
-            instance = new SbFragment() {
-                @Override
-                public boolean onKeyDown(int keyCode, KeyEvent event) {
-                    return super.onKeyDown(keyCode, event);
-                }
-            };
+            instance = new SbFragment();
 
             instance.setLocation(Constants.PROTOCOL, Constants.HOST, Constants.PATH);
             instance.setEnableDebug(BuildConfig.DEBUG);

@@ -14,7 +14,7 @@ import io.scrollback.neighborhoods.data.AreaModel;
 public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
 
     private final LayoutInflater mInflater;
-    private final List<AreaModel> mModels;
+    private List<AreaModel> mModels;
 
     public AreaAdapter(Context context, List<AreaModel> models) {
         mInflater = LayoutInflater.from(context);
@@ -46,6 +46,10 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
         applyAndAnimateMovedItems(models);
     }
 
+    public void updateList(List<AreaModel> data) {
+        mModels = data;
+        notifyDataSetChanged();
+    }
     private void applyAndAnimateRemovals(List<AreaModel> newModels) {
         for (int i = mModels.size() - 1; i >= 0; i--) {
             final AreaModel model = mModels.get(i);

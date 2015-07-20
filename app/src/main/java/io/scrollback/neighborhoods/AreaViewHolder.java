@@ -20,6 +20,8 @@ public class AreaViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(AreaModel model) {
         name.setText(model.getName());
+        if(model.getDistFromLocation()!=0.0)
+            description.setText(String.format("%.2f km away",model.getDistFromLocation()/1000.0));
         description.setText(model.getDescription());
     }
 }

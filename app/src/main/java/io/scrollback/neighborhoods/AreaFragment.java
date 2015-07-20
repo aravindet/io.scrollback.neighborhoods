@@ -42,12 +42,18 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
     private AreaAdapter allAdapter;
     private AreaAdapter recentAdapter;
 
+    private double lastSeenLatitude = 0;
+    private double lastSeenLongitude = 0;
+
     private List<AreaModel> allAreas = new ArrayList<>();
     private List<AreaModel> recentAreas = new ArrayList<>();
 
     private View mSearchEditFrame;
 
+    private boolean isRecent;
+
     private void setAdapter(boolean isRecent) {
+        this.isRecent=isRecent;
         if (mRecyclerView == null) {
             return;
         }
@@ -148,6 +154,16 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
         );
     }
 
+    public void sortAreas(double locLat, double locLong) {
+
+        Collections.sort(allAreas,new AreaStore.AreaSorter(locLat,locLong));
+        if(!isRecent)
+            currentAdapter.updateList(allAreas);
+        lastSeenLatitude=locLat;
+        lastSeenLongitude=locLong;
+
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
@@ -172,6 +188,9 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
                 if (currentVisibility != oldVisibility) {
                     if (currentVisibility == View.VISIBLE) {
                         setAdapter(false);
+                        if(!isRecent)
+                            if(lastSeenLatitude!=0&&lastSeenLongitude!=0)
+                                sortAreas(lastSeenLatitude,lastSeenLongitude);
                     } else {
                         setAdapter(true);
                     }

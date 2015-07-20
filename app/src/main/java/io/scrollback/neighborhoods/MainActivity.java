@@ -1,11 +1,17 @@
 package io.scrollback.neighborhoods;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import io.scrollback.library.AuthStatus;
 import io.scrollback.library.FollowMessage;
@@ -14,12 +20,14 @@ import io.scrollback.library.ReadyMessage;
 import io.scrollback.library.ScrollbackFragment;
 import io.scrollback.library.ScrollbackMessageHandler;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
     ScrollbackFragment scrollbackFragment = SbFragment.getInstance();
     AreaFragment areaFragment;
 
     FrameLayout areaFrame;
     FrameLayout sbFrame;
+    private LocationManager locationManager;
+    private String provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
 
         areaFrame = (FrameLayout) findViewById(R.id.area_container);
         sbFrame = (FrameLayout) findViewById(R.id.scrollback_container);
+
+        // Get the location manager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        Location location = locationManager.getLastKnownLocation(provider);
 
         if (savedInstanceState == null) {
             showAreaFragment();
@@ -66,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         scrollbackFragment.setCanChangeStatusBarColor(false);
+
+
     }
 
     public void showAreaFragment() {
@@ -79,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         areaFrame.setVisibility(View.VISIBLE);
         sbFrame.setVisibility(View.INVISIBLE);
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
     }
 
     public void hideAreaFragment() {
@@ -96,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
         areaFrame.setVisibility(View.INVISIBLE);
         sbFrame.setVisibility(View.VISIBLE);
+        locationManager.removeUpdates(this);
     }
 
     @Override
@@ -106,5 +126,44 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    /* Request updates at startup */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(areaFrame.getVisibility()==View.VISIBLE)
+            locationManager.requestLocationUpdates(provider, 400, 1, this);
+    }
+
+    /* Remove the locationlistener updates when Activity is paused */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if(areaFragment!= null) {
+            areaFragment.sortAreas(location.getLatitude(), location.getLongitude());
+        }
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        // TODO Auto-generated method stub
     }
 }
