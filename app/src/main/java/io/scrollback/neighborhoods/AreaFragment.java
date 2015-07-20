@@ -57,8 +57,6 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
                 return;
             }
 
-            mRecyclerView.setAdapter(recentAdapter);
-
             currentAdapter = recentAdapter;
             currentModel = recentAreas;
         } else {
@@ -66,11 +64,11 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
                 return;
             }
 
-            mRecyclerView.setAdapter(allAdapter);
-
-            currentAdapter = recentAdapter;
+            currentAdapter = allAdapter;
             currentModel = allAreas;
         }
+
+        mRecyclerView.setAdapter(currentAdapter);
     }
 
     @Override
