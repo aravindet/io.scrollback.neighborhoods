@@ -25,7 +25,7 @@ public class IntentService extends ScrollbackIntentService {
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
-                            .setSmallIcon(io.scrollback.library.R.mipmap.ic_status)
+                            .setSmallIcon(R.mipmap.ic_status)
                             .setContentTitle(n.getTitle())
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(n.getText()))
                             .setContentText(n.getText())
