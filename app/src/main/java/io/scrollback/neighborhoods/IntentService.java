@@ -8,9 +8,6 @@ import android.support.v4.app.NotificationCompat;
 
 import io.scrollback.library.ScrollbackIntentService;
 
-/**
- * Created by karthikbalakrishnan on 20/07/15.
- */
 public class IntentService extends ScrollbackIntentService {
     public static final int NOTIFICATION_ID = 1;
     private NotificationManager mNotificationManager;
@@ -28,7 +25,7 @@ public class IntentService extends ScrollbackIntentService {
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this)
-                            .setSmallIcon(io.scrollback.library.R.mipmap.ic_launcher)
+                            .setSmallIcon(io.scrollback.library.R.mipmap.ic_status)
                             .setContentTitle(n.getTitle())
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(n.getText()))
                             .setContentText(n.getText())
