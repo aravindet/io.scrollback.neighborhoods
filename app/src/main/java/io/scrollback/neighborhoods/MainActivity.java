@@ -120,7 +120,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return scrollbackFragment.onKeyDown(keyCode, event);
+        boolean handled = scrollbackFragment.onKeyDown(keyCode, event);
+
+        if (!handled) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                finish();
+
+                return true;
+            }
+
+            return super.onKeyDown(keyCode, event);
+        }
+
+        return true;
     }
 
     @Override
