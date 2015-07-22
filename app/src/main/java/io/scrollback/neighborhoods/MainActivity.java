@@ -156,9 +156,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onLocationChanged(Location location) {
-        if(areaFragment!= null) {
-            areaFragment.sortAreas(location.getLatitude(), location.getLongitude());
+        if (areaFragment!= null) {
+            areaFragment.setLocation(location);
         }
+
         locationManager.removeUpdates(this);
     }
 

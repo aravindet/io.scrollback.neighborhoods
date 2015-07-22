@@ -46,10 +46,6 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
         applyAndAnimateMovedItems(models);
     }
 
-    public void updateList(List<AreaModel> data) {
-        mModels = data;
-        notifyDataSetChanged();
-    }
     private void applyAndAnimateRemovals(List<AreaModel> newModels) {
         for (int i = mModels.size() - 1; i >= 0; i--) {
             final AreaModel model = mModels.get(i);

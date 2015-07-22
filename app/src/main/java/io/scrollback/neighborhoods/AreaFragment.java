@@ -1,5 +1,6 @@
 package io.scrollback.neighborhoods;
 
+import android.location.Location;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -39,9 +40,6 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
     private AreaAdapter currentAdapter;
     private List<AreaModel> currentModel;
 
-    private AreaAdapter allAdapter;
-    private AreaAdapter recentAdapter;
-
     private double lastSeenLatitude = 0;
     private double lastSeenLongitude = 0;
 
@@ -50,31 +48,38 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
     private View mSearchEditFrame;
 
-    private boolean isRecent;
+    private boolean isRecentActive;
 
     private void setAdapter(boolean isRecent) {
-        this.isRecent=isRecent;
         if (mRecyclerView == null) {
             return;
         }
 
         if (isRecent && recentAreas.size() > 0) {
-            if (currentModel != null && currentModel.size() == recentAreas.size()) {
-                return;
-            }
-
-            currentAdapter = recentAdapter;
             currentModel = recentAreas;
+
+            isRecentActive = true;
         } else {
-            if (currentModel != null && currentModel.size() == allAreas.size()) {
-                return;
+            if (lastSeenLatitude != 0 && lastSeenLongitude != 0) {
+                Collections.sort(allAreas, new AreaStore.AreaSorter(lastSeenLatitude, lastSeenLongitude));
             }
 
-            currentAdapter = allAdapter;
             currentModel = allAreas;
+
+            isRecentActive = false;
         }
 
+        currentAdapter = new AreaAdapter(getActivity(), currentModel);
         mRecyclerView.setAdapter(currentAdapter);
+    }
+
+    public void setLocation(Location location) {
+        lastSeenLatitude = location.getLatitude();
+        lastSeenLongitude = location.getLongitude();
+
+        if (!isRecentActive) {
+            setAdapter(false);
+        }
     }
 
     @Override
@@ -129,9 +134,6 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
             allAreas.add(area);
         }
 
-        recentAdapter = new AreaAdapter(getActivity(), recentAreas);
-        allAdapter = new AreaAdapter(getActivity(), allAreas);
-
         setAdapter(true);
 
         mRecyclerView.addOnItemTouchListener(
@@ -152,16 +154,6 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
                 }
             })
         );
-    }
-
-    public void sortAreas(double locLat, double locLong) {
-
-        Collections.sort(allAreas,new AreaStore.AreaSorter(locLat,locLong));
-        if(!isRecent)
-            currentAdapter.updateList(allAreas);
-        lastSeenLatitude=locLat;
-        lastSeenLongitude=locLong;
-
     }
 
     @Override
@@ -188,9 +180,6 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
                 if (currentVisibility != oldVisibility) {
                     if (currentVisibility == View.VISIBLE) {
                         setAdapter(false);
-                        if(!isRecent)
-                            if(lastSeenLatitude!=0&&lastSeenLongitude!=0)
-                                sortAreas(lastSeenLatitude,lastSeenLongitude);
                     } else {
                         setAdapter(true);
                     }
