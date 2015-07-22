@@ -27,9 +27,9 @@ public class AreaViewHolder extends RecyclerView.ViewHolder {
 
         if (meters != 0.0) {
             if (meters > 1000) {
-                distance.setText(String.format("%.2f km away", meters / 1000.0));
+                distance.setText(String.format("%.2f km", meters / 1000.0));
             } else {
-                distance.setText(String.format("%d meters away", Math.round(meters)));
+                distance.setText(String.format("%d m", Math.round(meters)));
             }
         }
 
