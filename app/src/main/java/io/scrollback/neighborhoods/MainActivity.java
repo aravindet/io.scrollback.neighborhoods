@@ -120,6 +120,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && areaFrame.getVisibility() == View.VISIBLE) {
+            finish();
+
+            return true;
+        }
+
         boolean handled = scrollbackFragment.onKeyDown(keyCode, event);
 
         if (!handled) {
@@ -143,14 +149,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     protected void onResume() {
         super.onResume();
-        if(areaFrame.getVisibility()==View.VISIBLE)
+
+        if (areaFrame.getVisibility()==View.VISIBLE) {
             locationManager.requestLocationUpdates(provider, 400, 1, this);
+        }
     }
 
     /* Remove the locationlistener updates when Activity is paused */
     @Override
     protected void onPause() {
         super.onPause();
+
         locationManager.removeUpdates(this);
     }
 
