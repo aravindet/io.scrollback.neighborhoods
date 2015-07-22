@@ -10,18 +10,29 @@ public class AreaViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView name;
     private final TextView description;
+    private final TextView distance;
 
     public AreaViewHolder(View itemView) {
         super(itemView);
 
         name = (TextView) itemView.findViewById(R.id.area_name);
         description = (TextView) itemView.findViewById(R.id.area_description);
+        distance = (TextView) itemView.findViewById(R.id.area_distance);
     }
 
     public void bind(AreaModel model) {
         name.setText(model.getName());
-        if(model.getDistFromLocation()!=0.0)
-            description.setText(String.format("%.2f km away",model.getDistFromLocation()/1000.0));
+
+        final double meters = model.getDistFromLocation();
+
+        if (meters != 0.0) {
+            if (meters > 1000) {
+                distance.setText(String.format("%.2f kms away", meters / 1000.0));
+            } else {
+                distance.setText(String.format("%d meters away", Math.round(meters)));
+            }
+        }
+
         description.setText(model.getDescription());
     }
 }
