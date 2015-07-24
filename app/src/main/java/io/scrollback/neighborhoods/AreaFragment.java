@@ -23,9 +23,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import io.scrollback.library.NavMessage;
 import io.scrollback.neighborhoods.data.AreaModel;
 import io.scrollback.neighborhoods.data.AreaProvider;
+
+import io.scrollback.library.NavMessage;
+import io.scrollback.library.FollowMessage;
+import io.scrollback.library.ScrollbackFragment;
 
 public class AreaFragment extends Fragment implements SearchView.OnQueryTextListener {
 
@@ -76,10 +79,14 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
                 new AreaStore(getActivity()).putArea(model);
 
-                SbFragment.getInstance().postMessage(new NavMessage("{" +
+                ScrollbackFragment instance = SbFragment.getInstance();
+
+                instance.postMessage(new NavMessage("{" +
                         "room: '" + model.getRoomId() + "'," +
                         "mode: 'room'" +
                         "}"));
+
+                instance.postMessage(new FollowMessage("{ role: 'follower' }"));
 
                 ((MainActivity) getActivity()).hideAreaFragment();
             }
