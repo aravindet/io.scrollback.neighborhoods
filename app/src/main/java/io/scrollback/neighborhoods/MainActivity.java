@@ -6,6 +6,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -85,7 +86,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         scrollbackFragment.setCanChangeStatusBarColor(false);
 
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        Uri uri = intent.getData();
 
+        if (intent.hasExtra("scrollback_path")) {
+            scrollbackFragment.loadPath(getIntent().getStringExtra("scrollback_path"));
+        } else if (Intent.ACTION_VIEW.equals(action) && uri != null) {
+            scrollbackFragment.loadUrl(uri.toString());
+        }
     }
 
     public void showAreaFragment() {
@@ -99,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         areaFrame.setVisibility(View.VISIBLE);
         sbFrame.setVisibility(View.INVISIBLE);
+
         locationManager.requestLocationUpdates(provider, 400, 1, this);
     }
 
@@ -117,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         areaFrame.setVisibility(View.INVISIBLE);
         sbFrame.setVisibility(View.VISIBLE);
+
         locationManager.removeUpdates(this);
     }
 
