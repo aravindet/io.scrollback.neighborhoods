@@ -11,7 +11,7 @@ import java.util.List;
 
 import io.scrollback.neighborhoods.data.AreaModel;
 
-public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
+public abstract class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
 
     private final LayoutInflater mInflater;
     private List<AreaModel> mModels;
@@ -21,11 +21,18 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaViewHolder> {
         mModels = new ArrayList<>(models);
     }
 
+    public abstract void onItemClickListener(AreaModel model);
+
     @Override
     public AreaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View itemView = mInflater.inflate(R.layout.area_row, parent, false);
 
-        return new AreaViewHolder(itemView);
+        return new AreaViewHolder(itemView) {
+            @Override
+            public void onItemClick(AreaModel model) {
+                onItemClickListener(model);
+            }
+        };
     }
 
     @Override

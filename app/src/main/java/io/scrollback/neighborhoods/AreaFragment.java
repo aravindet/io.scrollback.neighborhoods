@@ -69,7 +69,22 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
             isRecentActive = false;
         }
 
-        currentAdapter = new AreaAdapter(getActivity(), currentModel);
+        currentAdapter = new AreaAdapter(getActivity(), currentModel) {
+            @Override
+            public void onItemClickListener(AreaModel model) {
+                model.setSelectTime(new Date());
+
+                new AreaStore(getActivity()).putArea(model);
+
+                SbFragment.getInstance().postMessage(new NavMessage("{" +
+                        "room: '" + model.getRoomId() + "'," +
+                        "mode: 'room'" +
+                        "}"));
+
+                ((MainActivity) getActivity()).hideAreaFragment();
+            }
+        };
+
         mRecyclerView.setAdapter(currentAdapter);
     }
 
@@ -135,25 +150,6 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
         }
 
         setAdapter(true);
-
-        mRecyclerView.addOnItemTouchListener(
-            new RecyclerItemClickListener(getActivity().getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
-                @Override public void onItemClick(View view, int position) {
-                    AreaModel model = currentModel.get(position);
-
-                    model.setSelectTime(new Date());
-
-                    new AreaStore(getActivity()).putArea(model);
-
-                    SbFragment.getInstance().postMessage(new NavMessage("{" +
-                            "room: '" + model.getRoomId() + "'," +
-                            "mode: 'room'" +
-                            "}"));
-
-                    ((MainActivity) getActivity()).hideAreaFragment();
-                }
-            })
-        );
     }
 
     @Override
