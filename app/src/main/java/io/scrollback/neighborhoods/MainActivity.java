@@ -43,19 +43,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         // Get the location manager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         // Define the criteria how to select the locatioin provider -> use
         // default
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
         Location location = locationManager.getLastKnownLocation(provider);
-
-        if (savedInstanceState == null) {
-            showAreaFragment();
-
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.scrollback_container, scrollbackFragment)
-                    .commit();
-        }
 
         scrollbackFragment.setMessageHandler(new ScrollbackMessageHandler() {
             @Override
@@ -94,7 +87,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             scrollbackFragment.loadPath(getIntent().getStringExtra("scrollback_path"));
         } else if (Intent.ACTION_VIEW.equals(action) && uri != null) {
             scrollbackFragment.loadUrl(uri.toString());
+        } else {
+            showAreaFragment();
         }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.scrollback_container, scrollbackFragment)
+                .commit();
     }
 
     public void showAreaFragment() {
