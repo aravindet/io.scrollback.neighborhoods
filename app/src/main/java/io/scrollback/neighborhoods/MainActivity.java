@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private LocationManager locationManager;
     private String provider;
 
+    public static boolean appOpen = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +147,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        appOpen = true;
+    }
+
     /* Request updates at startup */
     @Override
     protected void onResume() {
@@ -161,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onPause();
 
         locationManager.removeUpdates(this);
+
+        appOpen = false;
     }
 
     @Override
