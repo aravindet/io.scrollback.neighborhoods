@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     FrameLayout areaFrame;
     FrameLayout sbFrame;
     private LocationManager locationManager;
-    private String provider;
 
     public static boolean appOpen = false;
 
@@ -46,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // Define the criteria how to select the locatioin provider -> use
         // default
         Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-        Location location = locationManager.getLastKnownLocation(provider);
 
         scrollbackFragment.setMessageHandler(new ScrollbackMessageHandler() {
             @Override
@@ -110,7 +107,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         areaFrame.setVisibility(View.VISIBLE);
         sbFrame.setVisibility(View.INVISIBLE);
 
-        locationManager.requestLocationUpdates(provider, 400, 1, this);
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 400, 1, this);
+        }
     }
 
     public void hideAreaFragment() {
@@ -172,8 +171,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     protected void onResume() {
         super.onResume();
 
-        if (areaFrame.getVisibility()==View.VISIBLE) {
-            locationManager.requestLocationUpdates(provider, 400, 1, this);
+        if (areaFrame.getVisibility() == View.VISIBLE && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 400, 1, this);
         }
     }
 
