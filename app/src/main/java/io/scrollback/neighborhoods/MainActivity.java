@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import io.scrollback.library.AuthStatus;
 import io.scrollback.library.FollowMessage;
@@ -68,13 +67,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
 
             @Override
-            public void onAuthMessage(AuthStatus message) { }
+            public void onAuthMessage(AuthStatus message) {
+            }
 
             @Override
-            public void onFollowMessage(FollowMessage message) { }
+            public void onFollowMessage(FollowMessage message) {
+            }
 
             @Override
-            public void onReadyMessage(ReadyMessage message) { }
+            public void onReadyMessage(ReadyMessage message) {
+            }
         });
 
         scrollbackFragment.setCanChangeStatusBarColor(false);
