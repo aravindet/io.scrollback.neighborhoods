@@ -26,6 +26,10 @@ public class Tutorial {
 
     private void show(final int view, final String hint_key, final Runnable runnable) {
         if (storage.getBoolean(hint_key, false)) {
+            if (runnable != null) {
+                runnable.run();
+            }
+
             return;
         }
 
