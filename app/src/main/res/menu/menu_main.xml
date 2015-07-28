@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/action_search"
-        android:title="@string/search_hint"
+        android:title="@string/search_placeholder"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always"
         />

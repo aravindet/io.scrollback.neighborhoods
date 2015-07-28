@@ -21,7 +21,7 @@ public class AreaStore {
 
     AreaStore(Context c) {
         if (storage == null){
-            storage = c.getSharedPreferences(STORE_NAME, Context.MODE_PRIVATE );
+            storage = c.getSharedPreferences(STORE_NAME, Context.MODE_PRIVATE);
         }
     }
 

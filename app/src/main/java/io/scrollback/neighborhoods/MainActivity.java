@@ -1,17 +1,27 @@
 package io.scrollback.neighborhoods;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import io.scrollback.library.AuthStatus;
 import io.scrollback.library.FollowMessage;
@@ -96,6 +106,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     public void showAreaFragment() {
+        if (areaFrame.getVisibility() == View.VISIBLE && areaFragment != null) {
+            return;
+        }
+
         getSupportActionBar().show();
 
         areaFragment = AreaFragment.newInstance();
@@ -113,6 +127,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
     public void hideAreaFragment() {
+        if (areaFrame.getVisibility() == View.INVISIBLE && areaFragment == null) {
+            return;
+        }
+
         // If you want to customize view animations (like material reveal) look here:
         // https://developer.android.com/training/material/animations.html#Reveal
         getSupportActionBar().hide();
