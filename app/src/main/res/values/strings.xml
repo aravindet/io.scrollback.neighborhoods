@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hey Neighbor</string>
+    <string name="app_name">Hey, Neighbor!</string>
     <string name="search_placeholder">Type your area…</string>
     <string name="search_tip">Look for neighborhood communities</string>
     <string name="item_tip">Tap a community to join</string>
