@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        scrollbackFragment.setCanChangeStatusBarColor(false);
+        scrollbackFragment.setPrimaryColor(getResources().getColor(R.color.primary), getResources().getColor(R.color.primary_dark));
 
         Intent intent = getIntent();
         String action = intent.getAction();
