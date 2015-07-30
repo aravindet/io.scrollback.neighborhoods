@@ -52,9 +52,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // Get the location manager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        // Define the criteria how to select the locatioin provider -> use
-        // default
-        Criteria criteria = new Criteria();
+        scrollbackFragment.setGcmSenderId(getString(R.string.gcm_sender_id));
 
         scrollbackFragment.setMessageHandler(new ScrollbackMessageHandler() {
             @Override
