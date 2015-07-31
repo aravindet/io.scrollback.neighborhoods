@@ -7,7 +7,7 @@ android {
         applicationId 'io.scrollback.neighborhoods'
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 4
+        versionCode 5
         versionName "1.0"
     }
     buildTypes {
