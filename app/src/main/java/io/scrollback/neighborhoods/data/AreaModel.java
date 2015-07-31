@@ -16,24 +16,26 @@ public class AreaModel {
     private double latitude;
     private double longitude;
     private String roomId;
+    private String tags;
     private Date selectTime;
     private double distFromLocation = 0;
 
-    protected void init(String name, String description, double latitude, double longitude, String roomId, Date selectTime) {
+    protected void init(String name, String description, double latitude, double longitude, String roomId, String tags, Date selectTime) {
         this.name = name;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
         this.roomId = roomId;
+        this.tags = tags;
         this.selectTime = selectTime;
     }
 
-    public AreaModel(String name, String description, double latitude, double longitude, String roomId, Date selectTime) {
-        init(name, description, latitude, longitude, roomId, selectTime);
+    public AreaModel(String name, String description, double latitude, double longitude, String roomId, String tags, Date selectTime) {
+        init(name, description, latitude, longitude, roomId, tags, selectTime);
     }
 
-    public AreaModel(String name, String description, double latitude, double longitude, String roomId) {
-        init(name, description, latitude, longitude, roomId, null);
+    public AreaModel(String name, String description, double latitude, double longitude, String roomId, String tags) {
+        init(name, description, latitude, longitude, roomId, tags, null);
     }
 
     public AreaModel(JSONObject json) {
@@ -56,6 +58,7 @@ public class AreaModel {
                 json.getDouble("latitude"),
                 json.getDouble("longitude"),
                 json.getString("roomId"),
+                json.getString("tags"),
                 date
             );
         } catch (JSONException e) {
@@ -103,6 +106,14 @@ public class AreaModel {
         this.roomId = roomId;
     }
 
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String roomId) {
+        this.tags = tags;
+    }
+
     public void setSelectTime(Date date) {
         this.selectTime = date;
     }
@@ -124,6 +135,7 @@ public class AreaModel {
             json.put("latitude", latitude);
             json.put("longitude", longitude);
             json.put("roomId", roomId);
+            json.put("tags", tags);
         } catch (JSONException e) {
             Log.d(Constants.TAG, e.getMessage());
 

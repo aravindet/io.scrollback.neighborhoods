@@ -224,8 +224,9 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
         for (AreaModel model : models) {
             final String name = model.getName().toLowerCase();
             final String description = model.getDescription().toLowerCase();
+            final String tags = model.getTags().toLowerCase();
 
-            if (name.contains(query) || description.contains(query)) {
+            if (name.contains(query) || description.contains(query) || tags.contains(query)) {
                 filteredModelList.add(model);
             }
         }
