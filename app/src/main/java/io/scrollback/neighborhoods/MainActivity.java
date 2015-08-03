@@ -19,13 +19,15 @@ import io.scrollback.library.ReadyMessage;
 import io.scrollback.library.ScrollbackFragment;
 import io.scrollback.library.ScrollbackMessageHandler;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends AppCompatActivity {
     ScrollbackFragment scrollbackFragment = SbFragment.getInstance();
     AreaFragment areaFragment;
 
     FrameLayout areaFrame;
     FrameLayout sbFrame;
-    private LocationManager locationManager;
+
+    private Location lastKnownLocation;
+    private boolean isLocationReceived = false;
 
     public static boolean appOpen = false;
 
@@ -38,8 +40,40 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         areaFrame = (FrameLayout) findViewById(R.id.area_container);
         sbFrame = (FrameLayout) findViewById(R.id.scrollback_container);
 
-        // Get the location manager
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Use network provided coarse location
+        final String locationProvider = LocationManager.NETWORK_PROVIDER;
+
+        // Acquire a reference to the system Location Manager
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
+
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                if (location == null) {
+                    return;
+                }
+
+                if (isLocationReceived == false && areaFragment != null) {
+                    areaFragment.setLocation(location);
+
+                    isLocationReceived = true;
+                }
+
+                lastKnownLocation = location;
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
 
         scrollbackFragment.setGcmSenderId(getString(R.string.gcm_sender_id));
 
@@ -101,16 +135,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         areaFragment = AreaFragment.newInstance();
 
+        if (lastKnownLocation != null) {
+            areaFragment.setLocation(lastKnownLocation);
+        }
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.area_container, areaFragment)
                 .commit();
 
         areaFrame.setVisibility(View.VISIBLE);
         sbFrame.setVisibility(View.INVISIBLE);
-
-        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 400, 1, this);
-        }
     }
 
     public void hideAreaFragment() {
@@ -132,8 +166,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         areaFrame.setVisibility(View.INVISIBLE);
         sbFrame.setVisibility(View.VISIBLE);
-
-        locationManager.removeUpdates(this);
     }
 
     @Override
@@ -171,44 +203,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         appOpen = true;
     }
 
-    /* Request updates at startup */
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (areaFrame.getVisibility() == View.VISIBLE && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 400, 1, this);
-        }
+        appOpen = true;
     }
 
-    /* Remove the locationlistener updates when Activity is paused */
     @Override
     protected void onPause() {
         super.onPause();
 
-        locationManager.removeUpdates(this);
-
         appOpen = false;
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        if (areaFragment!= null) {
-            areaFragment.setLocation(location);
-        }
-
-        locationManager.removeUpdates(this);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
     }
 }
