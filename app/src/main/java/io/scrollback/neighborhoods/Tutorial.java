@@ -67,11 +67,11 @@ public class Tutorial {
         dialog.show();
     }
 
-    public void showAllTips() {
+    public void showAllTips(final Runnable runnable) {
         show(R.layout.search_tip, "search_hint_shown", new Runnable() {
             @Override
             public void run() {
-                show(R.layout.item_tip, "item_hint_shown", null);
+                show(R.layout.item_tip, "item_hint_shown", runnable);
             }
         });
     }

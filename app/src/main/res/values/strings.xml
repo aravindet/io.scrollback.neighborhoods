@@ -3,6 +3,9 @@
     <string name="search_placeholder">Type your area…</string>
     <string name="search_tip">Look for neighborhood communities</string>
     <string name="item_tip">Tap a community to join</string>
+    <string name="gps_prompt">Help us find best communities for you by enabling your GPS.</string>
+    <string name="enable_gps">Enable in Settings</string>
+    <string name="not_now">Not now</string>
     <string name="got_it">GOT IT!</string>
 
     <string name="gcm_sender_id">949615022713</string>

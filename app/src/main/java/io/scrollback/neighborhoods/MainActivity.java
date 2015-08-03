@@ -1,12 +1,16 @@
 package io.scrollback.neighborhoods;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout sbFrame;
 
     private Location lastKnownLocation;
+    private LocationManager locationManager;
+
+    private String locationProvider = LocationManager.NETWORK_PROVIDER;
+
     private boolean isLocationReceived = false;
 
     public static boolean appOpen = false;
@@ -40,11 +48,8 @@ public class MainActivity extends AppCompatActivity {
         areaFrame = (FrameLayout) findViewById(R.id.area_container);
         sbFrame = (FrameLayout) findViewById(R.id.scrollback_container);
 
-        // Use network provided coarse location
-        final String locationProvider = LocationManager.NETWORK_PROVIDER;
-
         // Acquire a reference to the system Location Manager
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         lastKnownLocation = locationManager.getLastKnownLocation(locationProvider);
 
@@ -126,6 +131,28 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    public void showEnableGPSDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final String action = Settings.ACTION_LOCATION_SOURCE_SETTINGS;
+
+        builder.setMessage(getString(R.string.gps_prompt))
+                .setPositiveButton(getString(R.string.enable_gps),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface d, int id) {
+                                startActivity(new Intent(action));
+                                d.dismiss();
+                            }
+                        })
+                .setNegativeButton(getString(R.string.not_now),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface d, int id) {
+                                d.cancel();
+                            }
+                        });
+        builder.create().show();
+    }
+
     public void showAreaFragment() {
         if (areaFrame.getVisibility() == View.VISIBLE && areaFragment != null) {
             return;
@@ -145,6 +172,17 @@ public class MainActivity extends AppCompatActivity {
 
         areaFrame.setVisibility(View.VISIBLE);
         sbFrame.setVisibility(View.INVISIBLE);
+
+        final Tutorial tutorial = new Tutorial(this);
+
+        tutorial.showAllTips(new Runnable() {
+            @Override
+            public void run() {
+                if (!locationManager.isProviderEnabled(locationProvider)) {
+                    showEnableGPSDialog();
+                }
+            }
+        });
     }
 
     public void hideAreaFragment() {

@@ -157,10 +157,6 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
         }
 
         setAdapter(true);
-
-        final Tutorial tutorial = new Tutorial(getActivity());
-
-        tutorial.showAllTips();
     }
 
     @Override
