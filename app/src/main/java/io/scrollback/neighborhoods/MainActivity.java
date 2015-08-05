@@ -18,13 +18,14 @@ import android.widget.FrameLayout;
 
 import io.scrollback.library.AuthStatus;
 import io.scrollback.library.FollowMessage;
+import io.scrollback.library.JSONMessage;
 import io.scrollback.library.NavMessage;
 import io.scrollback.library.ReadyMessage;
 import io.scrollback.library.ScrollbackFragment;
 import io.scrollback.library.ScrollbackMessageHandler;
 
 public class MainActivity extends AppCompatActivity {
-    ScrollbackFragment scrollbackFragment = SbFragment.getInstance();
+    ScrollbackFragment scrollbackFragment;
     AreaFragment areaFragment;
 
     FrameLayout areaFrame;
@@ -80,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
 
+        if (scrollbackFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .remove(scrollbackFragment)
+                    .commit();
+        }
+
+        scrollbackFragment = SbFragment.newInstance();
+
         scrollbackFragment.setGcmSenderId(getString(R.string.gcm_sender_id));
 
         scrollbackFragment.setMessageHandler(new ScrollbackMessageHandler() {
@@ -120,8 +129,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (intent.hasExtra("scrollback_path")) {
             scrollbackFragment.loadPath(getIntent().getStringExtra("scrollback_path"));
+
+            hideAreaFragment();
         } else if (Intent.ACTION_VIEW.equals(action) && uri != null) {
             scrollbackFragment.loadUrl(uri.toString());
+
+            hideAreaFragment();
         } else {
             showAreaFragment();
         }
@@ -204,6 +217,12 @@ public class MainActivity extends AppCompatActivity {
 
         areaFrame.setVisibility(View.INVISIBLE);
         sbFrame.setVisibility(View.VISIBLE);
+    }
+
+    public void postMessage(JSONMessage message) {
+        if (scrollbackFragment != null) {
+            scrollbackFragment.postMessage(message);
+        }
     }
 
     @Override
