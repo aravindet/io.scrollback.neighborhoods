@@ -20,12 +20,12 @@ public class IntentService extends ScrollbackIntentService {
             return;
         }
 
-        mNotificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         Log.e(io.scrollback.library.Constants.TAG, "sending message");
 
         Intent i = new Intent(this, MainActivity.class);
+
         i.putExtra("scrollback_path", n.getPath());
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);

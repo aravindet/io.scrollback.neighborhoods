@@ -1,6 +1,5 @@
 package io.scrollback.neighborhoods;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,10 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static boolean appOpen = false;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    private void handleIntent(Intent intent) {
         setContentView(R.layout.activity_main);
 
         areaFrame = (FrameLayout) findViewById(R.id.area_container);
@@ -124,12 +120,11 @@ public class MainActivity extends AppCompatActivity {
 
         scrollbackFragment.setPrimaryColor(getResources().getColor(R.color.primary), getResources().getColor(R.color.primary_dark));
 
-        Intent intent = getIntent();
         String action = intent.getAction();
         Uri uri = intent.getData();
 
         if (intent.hasExtra("scrollback_path")) {
-            scrollbackFragment.loadPath(getIntent().getStringExtra("scrollback_path"));
+            scrollbackFragment.loadPath(intent.getStringExtra("scrollback_path"));
 
             hideAreaFragment();
         } else if (Intent.ACTION_VIEW.equals(action) && uri != null) {
@@ -143,6 +138,20 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.scrollback_container, scrollbackFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        handleIntent(intent);
     }
 
     public void showEnableGPSDialog() {
