@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String locationProvider = LocationManager.NETWORK_PROVIDER;
 
+    private boolean isPromptShown = false;
     private boolean isLocationReceived = false;
 
     public static boolean appOpen = false;
@@ -191,8 +192,10 @@ public class MainActivity extends AppCompatActivity {
         tutorial.showAllTips(new Runnable() {
             @Override
             public void run() {
-                if (!locationManager.isProviderEnabled(locationProvider)) {
+                if (!isPromptShown && !locationManager.isProviderEnabled(locationProvider)) {
                     showEnableGPSDialog();
+
+                    isPromptShown = true;
                 }
             }
         });
