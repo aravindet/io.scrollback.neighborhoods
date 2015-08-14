@@ -15,6 +15,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.facebook.stetho.Stetho;
+
 import io.scrollback.library.AuthStatus;
 import io.scrollback.library.FollowMessage;
 import io.scrollback.library.JSONMessage;
@@ -143,6 +145,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (BuildConfig.DEBUG) {
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(
+                                    Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(
+                                    Stetho.defaultInspectorModulesProvider(this))
+                            .build());
+        }
 
         handleIntent(getIntent());
     }
