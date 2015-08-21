@@ -85,7 +85,10 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
                         "mode: 'room'" +
                         "}"));
 
-                main.postMessage(new FollowMessage("{ role: 'follower' }"));
+                main.postMessage(new FollowMessage("{" +
+                        "room: '" + model.getRoomId() + "'," +
+                        "role: 'follower'" +
+                        "}"));
 
                 main.hideAreaFragment();
             }
