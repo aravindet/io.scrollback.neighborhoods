@@ -10,7 +10,7 @@ public class AreaProvider {
     public static void initializeAreas() {
         areas = new ArrayList<>();
 
-        areas.add(new AreaModel("Abbigere", "Abbigere is a village in the southern state of Karnataka, India. It is located in the Bangalore North taluk of Bangalore district in Karnataka. Abbigere is one of the fast developing residential layouts in north Bangalore.", 13.0762712  ,77.5255683 , "abbigere", "Abbigere, Kempegowda Garden, Lakshmaiah Layout"));
+        areas.add(new AreaModel("Abbigere", "Abbigere is a village in the southern state of Karnataka, India. It is located in the Bangalore North taluk of Bangalore district in Karnataka. Abbigere is one of the fast developing residential layouts in north Bangalore.", 13.0762712, 77.5255683, "abbigere", "Abbigere, Kempegowda Garden, Lakshmaiah Layout"));
         areas.add(new AreaModel("Adugodi", "Audogudi is between Koramangala and Diary Circle best known for the forum mall.", 12.9441334  ,77.607615 , "adugodi", "Ayappa Garden, New Mico Road, Bosch Limited"));
         areas.add(new AreaModel("AECS Layout", "Join the community of awesome AECS Layout Residents. AECS layout is comapratively new but one of the most happening neighborhood of Bangalore", 12.9650431  ,77.7184358 , "aecs-layout", "AECS Layout"));
         areas.add(new AreaModel("Akshayanagar", "Connecting the people of Akshayanagar", 12.8689407  ,77.6162491 , "akshayanagar", "Akshayanagar, DLF Newtown, Akshaya Vana, Nobanagar, NICE Ring Road"));

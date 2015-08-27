@@ -42,8 +42,6 @@ public class AreaStore {
     }
 
     public AreaModel getArea(String roomId) {
-        AreaModel area = null;
-
         return parseString(storage.getString(roomId, null));
     }
 
@@ -89,6 +87,7 @@ public class AreaStore {
 
         return list;
     }
+
     public static class AreaSorter implements Comparator<AreaModel> {
 
         double latitude,longitude;
@@ -100,13 +99,23 @@ public class AreaStore {
 
         @Override
         public int compare(AreaModel o1, AreaModel o2) {
-            double o1Dist = distFrom(o1.getLatitude(),o1.getLongitude(),latitude,longitude);
+            if (o1.getRoomId() == "bangalore") {
+                return -1;
+            } else if (o2.getRoomId() == "bangalore") {
+                return 1;
+            }
+
+            double o1Dist = distFrom(o1.getLatitude(),o1.getLongitude(), latitude, longitude);
+
             o1.setDistFromLocation(o1Dist);
-            double o2Dist = distFrom(o2.getLatitude(),o2.getLongitude(),latitude,longitude);
+
+            double o2Dist = distFrom(o2.getLatitude(),o2.getLongitude(), latitude, longitude);
+
             o2.setDistFromLocation(o2Dist);
 
             return Double.compare(o1Dist,o2Dist);
         }
+
         public double distFrom(double lat1, double lng1, double lat2, double lng2) {
             double earthRadius = 6371000; //meters
             double dLat = Math.toRadians(lat2-lat1);
@@ -114,6 +123,7 @@ public class AreaStore {
             double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                     Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
                             Math.sin(dLng/2) * Math.sin(dLng/2);
+
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             double dist = (float) (earthRadius * c);
 

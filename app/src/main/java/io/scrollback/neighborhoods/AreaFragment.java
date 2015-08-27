@@ -52,6 +52,14 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
     private boolean isRecentActive;
 
+    private AreaModel bangaloreRoom = new AreaModel(
+            "Bangalore (Bengaluru)",
+            "Stay connected to know everything awesome happening around you in Bangalore.",
+            12.9667, 77.5667 ,
+            "bangalore",
+            "Bangalore, Bengaluru"
+    );
+
     private void setAdapter(boolean isRecent) {
         if (mRecyclerView == null) {
             return;
@@ -123,7 +131,18 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        List<AreaModel> all = new AreaStore(getActivity()).getAll();
+        ((MainActivity) getActivity()).postMessage(new FollowMessage("{" +
+                "room: '" + bangaloreRoom.getRoomId() + "'," +
+                "role: 'follower'" +
+                "}"));
+
+        AreaStore store = new AreaStore(getActivity());
+
+        bangaloreRoom.setSelectTime(new Date());
+
+        store.putArea(bangaloreRoom);
+
+        List<AreaModel> all = store.getAll();
 
         int size = all.size();
 
@@ -151,8 +170,10 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
                 }
             });
 
-            recentAreas = all.subList(Math.max(size - 5, 0), size);
+            recentAreas = all.subList(Math.max(size - 6, 0), size);
         }
+
+        allAreas.add(bangaloreRoom);
 
         for (AreaModel area: Areas) {
             allAreas.add(area);
