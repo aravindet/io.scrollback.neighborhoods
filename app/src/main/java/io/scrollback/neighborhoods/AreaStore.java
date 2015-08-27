@@ -105,11 +105,11 @@ public class AreaStore {
                 return 1;
             }
 
-            double o1Dist = distFrom(o1.getLatitude(),o1.getLongitude(), latitude, longitude);
+            double o1Dist = distFrom(o1.getLatitude(), o1.getLongitude(), latitude, longitude);
 
             o1.setDistFromLocation(o1Dist);
 
-            double o2Dist = distFrom(o2.getLatitude(),o2.getLongitude(), latitude, longitude);
+            double o2Dist = distFrom(o2.getLatitude(), o2.getLongitude(), latitude, longitude);
 
             o2.setDistFromLocation(o2Dist);
 

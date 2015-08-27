@@ -146,7 +146,7 @@ public class AreaFragment extends Fragment implements SearchView.OnQueryTextList
 
         int size = all.size();
 
-        if (size > 0) {
+        if (size > 1) {
             Collections.sort(all, new Comparator<AreaModel>() {
                 public int compare(final AreaModel a, final AreaModel b) {
                     Date dateA = a.getSelectTime();
