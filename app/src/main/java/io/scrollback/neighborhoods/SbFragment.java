@@ -7,7 +7,7 @@ public class SbFragment extends ScrollbackFragment {
         ScrollbackFragment instance = new SbFragment();
 
         instance.setLocation(Constants.PROTOCOL, Constants.HOST, Constants.PATH);
-        instance.setEnableDebug(BuildConfig.DEBUG);
+        instance.setEnableDebug(true);
 
         return instance;
     }

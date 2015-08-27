@@ -7,7 +7,7 @@ android {
         applicationId 'io.scrollback.neighborhoods'
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 9
+        versionCode 10
         versionName "1.0"
     }
     buildTypes {
@@ -19,9 +19,11 @@ android {
     productFlavors {
         production {
         }
+
         staging {
             applicationId "io.scrollback.neighborhoods.staging"
         }
+
         development {
             applicationId "io.scrollback.neighborhoods.development"
         }
