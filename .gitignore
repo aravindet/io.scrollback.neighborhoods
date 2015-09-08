@@ -1,3 +1,6 @@
+# Downloaded asset files
+app/src/*/assets/www
+
 # Built application files
 *.apk
 *.ap_

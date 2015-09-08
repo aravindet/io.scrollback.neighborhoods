@@ -1,5 +1,38 @@
 apply plugin: 'com.android.application'
 
+def downloadAssets(String target) {
+    exec {
+        executable "../scrollbacklib/update.sh"
+        args "../app/src/" + target, "io.scrollback.neighborhoods", "Constants.java"
+    }
+}
+
+task productionAssets << {
+    downloadAssets("production")
+}
+
+task stagingAssets << {
+    downloadAssets("staging")
+}
+
+task developmentAssets << {
+    downloadAssets("development")
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'generateProductionDebugAssets' || task.name == 'generateProductionReleaseAssets') {
+        task.dependsOn(productionAssets)
+    }
+
+    if (task.name == 'generateStagingDebugAssets' || task.name == 'generateStagingReleaseAssets') {
+        task.dependsOn(stagingAssets)
+    }
+
+    if (task.name == 'generateDevelopmentDebugAssets' || task.name == 'generateDevelopmentReleaseAssets') {
+        task.dependsOn(developmentAssets)
+    }
+}
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -7,7 +40,7 @@ android {
         applicationId 'io.scrollback.neighborhoods'
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 12
+        versionCode 13
         versionName "1.0"
     }
     buildTypes {
