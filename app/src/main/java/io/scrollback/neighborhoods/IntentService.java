@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -40,6 +41,12 @@ public class IntentService extends ScrollbackIntentService {
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                         .setAutoCancel(true);
+
+        Bitmap largeIcon = n.getBitmap(Constants.PROTOCOL, Constants.HOST);
+
+        if (largeIcon != null) {
+            mBuilder.setLargeIcon(largeIcon);
+        }
 
         mBuilder.setContentIntent(contentIntent);
 
