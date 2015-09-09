@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import io.scrollback.library.*;
@@ -35,9 +36,12 @@ public class IntentService extends ScrollbackIntentService {
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_status)
                         .setColor(getResources().getColor(R.color.primary))
+                        .setTicker(n.getTitle())
                         .setContentTitle(n.getTitle())
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(n.getText()))
                         .setContentText(n.getText())
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                         .setAutoCancel(true);
 
         mBuilder.setContentIntent(contentIntent);
