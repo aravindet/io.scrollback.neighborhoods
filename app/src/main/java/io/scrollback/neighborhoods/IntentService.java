@@ -34,7 +34,7 @@ public class IntentService extends ScrollbackIntentService {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_status)
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                        .setColor(getResources().getColor(R.color.primary))
                         .setContentTitle(n.getTitle())
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(n.getText()))
                         .setContentText(n.getText())
