@@ -120,7 +120,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        scrollbackFragment.setPrimaryColor(getResources().getColor(R.color.primary), getResources().getColor(R.color.primary_dark));
+        scrollbackFragment.setPrimaryColors(
+                "#" + Integer.toHexString(getResources().getColor(R.color.primary)).substring(2),
+                "#" + Integer.toHexString(getResources().getColor(R.color.primary_dark)).substring(2)
+        );
 
         String action = intent.getAction();
         Uri uri = intent.getData();

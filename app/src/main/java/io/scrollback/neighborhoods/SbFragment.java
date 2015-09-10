@@ -8,6 +8,7 @@ public class SbFragment extends ScrollbackFragment {
 
         instance.setLocation(Constants.PROTOCOL, Constants.HOST, Constants.PATH);
         instance.setEnableDebug(true);
+        instance.setCanChangeStatusBarColor(true);
 
         return instance;
     }
